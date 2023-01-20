@@ -1,6 +1,6 @@
 import "./App.css";
-import { ReleaseForm } from "./components/Invoice";
-// import { Result } from "./components/Result";
+import { ReleaseForm } from "./components/ReleaseForm";
+import { ContainerResult } from "./components/ContainerResult";
 import { AuthProvider } from "./context/AuthContext";
 
 function App() {
@@ -10,7 +10,7 @@ function App() {
         <main className="App-main">
           <section>
             <ReleaseForm />
-            {/* <Result /> */}
+            <ContainerResult />
           </section>
         </main>
       </AuthProvider>

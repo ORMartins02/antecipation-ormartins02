@@ -1,49 +1,78 @@
 import { ReactNode, createContext, useState } from "react";
 import api from "../services/api";
 
-interface IAntecipationData {
-  amount: number;
-  installments: number;
-  mdr: number;
-}
-
 export interface ISubmitValue {
   amount: number;
   installments: number;
   mdr: number;
-}
-
-export interface IResponse {
-  "1": number;
-  "15": number;
-  "30": number;
-  "60": number;
-  "90": number;
+  days: string;
 }
 
 interface IAuthProviderProps {
   children: ReactNode;
 }
 
+interface IResultAntecipationValues {
+  Amanhã: number;
+  "15": number;
+  "30": number;
+  "60": number;
+  "90": number;
+}
+
 export interface IAuthContext {
   onSubmitValue: (data: ISubmitValue) => void;
-  antecipationValues: IResponse;
+  antecipationValues: IResultAntecipationValues;
+  antecipationListKeys: string[];
+  antecipationListValues: number[];
 }
 
 export const AuthContext = createContext<IAuthContext>({} as IAuthContext);
 
 export const AuthProvider = ({ children }: IAuthProviderProps) => {
-  const values = { "1": 0, "15": 0, "30": 0, "60": 0, "90": 0 };
+  const objectData = { Amanhã: 0, "15": 0, "30": 0, "60": 0, "90": 0 };
+  const objectKeys = Object.keys(objectData);
+  const objectValues = Object.values(objectData);
 
-  const [antecipationData, setAntecipationData] = useState<IAntecipationData>();
   const [antecipationValues, setAntecipationValues] =
-    useState<IResponse>(values);
+    useState<IResultAntecipationValues>(objectData);
+  const [antecipationListKeys, setAntecipationListKeys] =
+    useState<string[]>(objectKeys);
+  const [antecipationListValues, setAntecipationListValues] =
+    useState<any[]>(objectValues);
 
   const onSubmitValue = async (data: ISubmitValue) => {
+    const { amount, installments, mdr, days } = data;
+
+    let daysArr = days.split(", ");
+
+    let newData = {};
+
+    if (days.length === 0) {
+      newData = { amount, installments, mdr };
+    } else {
+      newData = { amount, installments, mdr, days: daysArr };
+    }
+
     await api
-      .post("", { ...data })
+      .post("", { ...newData })
       .then((response) => {
         setAntecipationValues(response.data);
+        let keys = Object.keys(response.data);
+        let values = Object.values(response.data);
+
+        keys.forEach((e, i) => {
+          keys[i] = `Em ${e}`;
+        });
+
+        if (keys[0] === "Em 1") {
+          keys[0] = "Amanhã";
+        }
+
+        setAntecipationListKeys(keys);
+        setAntecipationListValues(values);
+
+        console.log(keys, values);
         console.log(response.data);
       })
       .catch((response) => {
@@ -52,7 +81,14 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
   };
 
   return (
-    <AuthContext.Provider value={{ onSubmitValue, antecipationValues }}>
+    <AuthContext.Provider
+      value={{
+        onSubmitValue,
+        antecipationValues,
+        antecipationListKeys,
+        antecipationListValues,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
