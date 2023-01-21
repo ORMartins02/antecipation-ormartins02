@@ -1,11 +1,19 @@
 import "./App.css";
+import { ReleaseForm } from "./components/ReleaseForm";
+import { ContainerResult } from "./components/ContainerResult";
+import { AuthProvider } from "./context/AuthContext";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <h1>Helo world!</h1>
-      </header>
+      <AuthProvider>
+        <main className="App-main">
+          <section>
+            <ReleaseForm />
+            <ContainerResult />
+          </section>
+        </main>
+      </AuthProvider>
     </div>
   );
 }
