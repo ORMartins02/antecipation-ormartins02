@@ -1,14 +1,22 @@
 import styled from "styled-components";
 
 export const DivForm = styled.div`
-  width: 377;
+  width: 608;
   height: 389;
+  padding-right: 30px;
+
+  h4 {
+    margin-left: 30px;
+    font-size: 24px;
+  }
 `;
 
 export const Form = styled.form`
+  width: 251px;
+  height: 249px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-around;
 
   h4 {
     font-size: 24px;
@@ -19,7 +27,7 @@ export const Form = styled.form`
   }
 
   input {
-    width: 251px;
+    max-width: 255px;
     height: 37px;
     font-size: 14px;
   }
@@ -32,6 +40,6 @@ export const Form = styled.form`
   div {
     display: flex;
     flex-direction: column;
-    padding-bottom: 20px;
+    margin-left: 30px;
   }
 `;

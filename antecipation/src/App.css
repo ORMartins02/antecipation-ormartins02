@@ -10,7 +10,9 @@
 }
 
 section {
-  background-color: #D1DCE3;
+  background-color: #FFFFFF;
+  border: 2px #D1DCE3;
+  border-radius: 4px;
   width: 608px;
   height: 389px;
   display: flex;
