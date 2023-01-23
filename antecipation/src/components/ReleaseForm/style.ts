@@ -42,4 +42,10 @@ export const Form = styled.form`
     flex-direction: column;
     margin-left: 30px;
   }
+
+  select {
+    max-width: 255px;
+    height: 37px;
+    font-size: 14px;
+  }
 `;
